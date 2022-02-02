@@ -53,15 +53,15 @@ class Training:
 
     def ask(self):
         if self.mode == 1:
-            return str(random.randint(1,len(self.table.Memory_Dictionary_num_to_nam)-1))
+            return str(random.randint(0,len(self.table.Memory_Dictionary_num_to_nam)-1))
         elif self.mode == 2:
-            return self.table.Memory_Dictionary_num_to_nam[random.randint(1,len(self.table.Memory_Dictionary_num_to_nam)-1)]
+            return self.table.Memory_Dictionary_num_to_nam[random.randint(0,len(self.table.Memory_Dictionary_num_to_nam)-1)]
         else:
             heads_or_tails = random.randint(0,2)
             if heads_or_tails:
-                return str(random.randint(1,len(self.table.Memory_Dictionary_num_to_nam)-1))
+                return str(random.randint(0,len(self.table.Memory_Dictionary_num_to_nam)-1))
             else:
-                return self.table.Memory_Dictionary_num_to_nam[random.randint(1,len(self.table.Memory_Dictionary_num_to_nam)-1)]
+                return self.table.Memory_Dictionary_num_to_nam[random.randint(0,len(self.table.Memory_Dictionary_num_to_nam)-1)]
 
     def check(self, question, answer):
         self.questions += 1
@@ -78,3 +78,8 @@ class Training:
 
     def score(self):
         return round(((self.questions - len(self.mistakes))/self.questions)*100,2)
+
+    def log(self):
+        log_file = open("{user_name}_memory_table_training_log.txt".format(user_name = self.user.name.lower()), "a")
+        log_file.write("{date}\t{time}\t{mode}\t{score}\t{questions}\n".format(date = self.beginning, time = self.time, mode = self.mode, score = self.score(), questions = self.questions))
+        log_file.close()

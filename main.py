@@ -48,19 +48,22 @@ while (training_session):
     print("Good job! Your score is {score}%, for {number_mistakes} mistakes out of {number_questions} questions. Here are your mistakes:".format(score = training.score(), number_mistakes = len(training.mistakes), number_questions = training.questions))
     for number, name in training.mistakes.items():
         print("{number}\t{name}".format(number = number, name = name))
+    print("Your session has been saved on the file {user_name}_memory_table_training_log.txt.".format(user_name = user.name.lower()))
+    training.log()
 
     # User choice
     print(classes.Decorations.big_separator)
-    print("Now, you have three different choices: ")
-    print("(1): Practice mistakes.")
-    print("(2): New training session.")
-    print("(3): Finish session.")
-    user_choice = input("What is your choice? ")
+    print("Now, you have two different choices: ")
+    print("(1): Do another training session.")
+    print("(2): Finish session.")
+    user_choice = int(input("What is your choice? "))
 
+    if user_choice == 1:
+        pass
     if user_choice == 2:
-        continue
-    if user_choice == 3:
         training_session = 0
-        break
-    else:
-         
+
+# Goodbye
+print(classes.Decorations.big_separator)
+print("Thanks {user_name} for training with me! Hope to see you soon ^^.".format(user_name = user.name))
+print(classes.Decorations.header)
