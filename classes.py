@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+import random
 
 class Decorations:
     header = \
@@ -31,16 +32,49 @@ class Table:
 
         pattern = re.compile("^([0-9]*)\t([a-z]*)$")
 
-        self.Memory_Dictionary = {}
+        self.Memory_Dictionary_num_to_nam = {}
+        self.Memory_Dictionary_nam_to_num = {}
 
         for line in memory_list:
             pattern_test = pattern.match(line)
             if pattern_test:
-                self.Memory_Dictionary[pattern_test.group(1)] = pattern_test.group(2)
+                self.Memory_Dictionary_num_to_nam[int(pattern_test.group(1))] = pattern_test.group(2)
+                self.Memory_Dictionary_nam_to_num[pattern_test.group(2)] = int(pattern_test.group(1))
 
 class Training:
-    def __init__(self, time, mode, user):
+    def __init__(self, time, mode, user, table):
         self.time =  int(time)
         self.mode = int(mode)
         self.user = user
         self.beginning = datetime.now()
+        self.questions = 0
+        self.mistakes = {}
+        self.table = table
+
+    def ask(self):
+        if self.mode == 1:
+            return str(random.randint(1,len(self.table.Memory_Dictionary_num_to_nam)-1))
+        elif self.mode == 2:
+            return self.table.Memory_Dictionary_num_to_nam[random.randint(1,len(self.table.Memory_Dictionary_num_to_nam)-1)]
+        else:
+            heads_or_tails = random.randint(0,2)
+            if heads_or_tails:
+                return str(random.randint(1,len(self.table.Memory_Dictionary_num_to_nam)-1))
+            else:
+                return self.table.Memory_Dictionary_num_to_nam[random.randint(1,len(self.table.Memory_Dictionary_num_to_nam)-1)]
+
+    def check(self, question, answer):
+        self.questions += 1
+        if answer.isnumeric():
+            number_answer = int(answer)
+            if self.table.Memory_Dictionary_num_to_nam[number_answer] != question:
+                self.mistakes[question] = self.table.Memory_Dictionary_nam_to_num[question]
+                print("X    {good_answer}".format(good_answer = self.table.Memory_Dictionary_nam_to_num[question]))
+        else:
+            number_question = int(question)
+            if self.table.Memory_Dictionary_num_to_nam[number_question] != answer:
+                self.mistakes[number_question] = self.table.Memory_Dictionary_num_to_nam[number_question]
+                print("X    {good_answer}".format(good_answer = self.table.Memory_Dictionary_num_to_nam[number_question]))
+
+    def score(self):
+        return round(((self.questions - len(self.mistakes))/self.questions)*100,2)
