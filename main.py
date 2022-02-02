@@ -8,7 +8,7 @@ user_name = input("What is your user name? ")
 print("\n Hello, {name}!".format(name = user_name))
 print(classes.Decorations.small_separator)
 print("To make this program work, you need to provide a .txt file in which each \
-number is the first in the line, followed by a space, and then the name of the \
+number is the first in the line, followed by a tab, and then the name of the \
 name you associated with it. Do you have such a file? Great!")
 table_file = input("What is the name of your file? ")
 
